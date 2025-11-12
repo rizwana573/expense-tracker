@@ -72,6 +72,7 @@ main {
     border: 1px solid #444;
     text-align: left;
     padding: 4px 8px;
+    text-transform: capitalize;
 }
 
 .input-container {
@@ -87,6 +88,8 @@ main {
 .input-container input {
     height: 28px;
     font-family: inherit;
+    text-transform: capitalize;
+    font: inherit;
 }
 
 .add-btn {

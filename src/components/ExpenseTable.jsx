@@ -1,14 +1,23 @@
 
-import { useEffect } from "react";
+export const ExpenseTable = ({data, query, setQuery}) => {
+const handleFilterChange = e => {
+   setQuery(e.target.value);
+}
+const filteredDate = query==="All" || query=== "" ? 
+data:
+data.filter(item => item.category.toLowerCase() === query.toLowerCase() );
 
-export const ExpenseTable = ({data}) => {
+const total = filteredDate.reduce(
+    (sum, obj) => sum + Number(obj.amount),
+    0
+  );
   return (
     <table className="expense-table">
       <thead>
         <tr>
           <th>Title</th>
           <th>
-            <select>
+            <select onChange={handleFilterChange}>
               <option value="">All</option>
               <option value="grocery">Grocery</option>
               <option value="clothes">Clothes</option>
@@ -43,7 +52,7 @@ export const ExpenseTable = ({data}) => {
         </tr>
       </thead>
       <tbody>
-        {data.map(({id, title,category,amount}) => {
+        {filteredDate.map(({id, title,category,amount}) => {
           return (
             <tr key={id}>
               <td>{title}</td>
@@ -55,7 +64,7 @@ export const ExpenseTable = ({data}) => {
         <tr>
               <th>Total</th>
               <th></th>
-              <th>₹{data.reduce((sum, obj)=> sum = sum+Number(obj.amount), 0)}</th>
+              <th>₹{total}</th>
             </tr>
       </tbody>
     </table>
