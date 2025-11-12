@@ -78,9 +78,16 @@ main {
 .input-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 12px;
+    margin-bottom: 22px;
+    position: relative;
 }
-
+.error{
+     position: absolute;
+    color: red;
+    bottom: -16px;
+    font-size: 10px;
+    margin-block: 0;
+}
 .input-container label {
     font-size: 14px;
 }
