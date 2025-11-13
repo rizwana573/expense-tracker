@@ -14,7 +14,7 @@ function App() {
       <h1>Track Your Expense</h1>
       <div className="expense-tracker">
         <ExpenseForm setExepenses={setExepenses} />
-        <ExpenseTable data={expenses} query={query} setQuery={setQuery}/>
+        <ExpenseTable expense={expenses} query={query} setQuery={setQuery}/>
         <ContextMenu />
       </div>
     </main>

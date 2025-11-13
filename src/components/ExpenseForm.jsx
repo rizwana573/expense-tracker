@@ -39,6 +39,10 @@ export const ExpenseForm = ({ setExepenses }) => {
           required: true,
           message: "Please enter an amount",
         },
+        {
+          valid: true,
+          message: "Plase enter a valid number"
+        }
       ],
     };
 
@@ -49,6 +53,11 @@ export const ExpenseForm = ({ setExepenses }) => {
           return true;
         }
         if (value.length < 5 && rule.minLength) {
+          errorsData[key] = rule.message;
+          return true;
+        }
+        console.log()
+         if (new RegExp('/^[0-9]$/').test(value) && rule.valid) {
           errorsData[key] = rule.message;
           return true;
         }
