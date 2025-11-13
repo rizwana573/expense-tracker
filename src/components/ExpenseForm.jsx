@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import { Input } from "./Input.jsx";
+import { Select } from "./Select.jsx";
 
 export const ExpenseForm = ({ setExepenses }) => {
   const [expenseObj, setExpenseObj] = useState({
@@ -11,9 +13,48 @@ export const ExpenseForm = ({ setExepenses }) => {
   const amountRef= useRef(null);***/
 
   const [error, setError] = useState({});
+
   const validate = (formData) => {
-    const errorsData ={};
-    if(!formData.title){
+    const errorsData = {};
+
+    const validationConfig = {
+      title: [
+        {
+          required: true,
+          message: "Please enter a title",
+        },
+        {
+          minLength: true,
+          message: "Title should be at least 5 characters long",
+        },
+      ],
+      category: [
+        {
+          required: true,
+          message: "Please select a category",
+        },
+      ],
+      amount: [
+        {
+          required: true,
+          message: "Please enter an amount",
+        },
+      ],
+    };
+
+    Object.entries(formData).forEach(([key, value]) => {
+      validationConfig[key].some((rule) => {
+        if (!value && rule.required) {
+          errorsData[key] = rule.message;
+          return true;
+        }
+        if (value.length < 5 && rule.minLength) {
+          errorsData[key] = rule.message;
+          return true;
+        }
+      });
+    });
+    /*if(!formData.title){
       errorsData.title="Title is required"
     }
     if(!formData.category){
@@ -21,10 +62,10 @@ export const ExpenseForm = ({ setExepenses }) => {
     }
     if(!formData.amount){
       errorsData.amount="Amount is required"
-    }
+    }*/
     setError(errorsData);
     return errorsData;
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,11 +78,11 @@ export const ExpenseForm = ({ setExepenses }) => {
         id: crypto.randomUUID() },
     ]);***/
 
-    if(Object.keys(validateRes).length===0){
-    setExepenses((prevState) => [
-          ...prevState,
-          { ...expenseObj, id: crypto.randomUUID() },
-        ]);
+    if (Object.keys(validateRes).length === 0) {
+      setExepenses((prevState) => [
+        ...prevState,
+        { ...expenseObj, id: crypto.randomUUID() },
+      ]);
     }
     setExpenseObj({
       title: "",
@@ -63,57 +104,40 @@ export const ExpenseForm = ({ setExepenses }) => {
     return data;
   };**/
   const handleChange = (e) => {
-     setExpenseObj((prevState) => ({
-        ...prevState,
-        [e.target.name]: e.target.value,
-      })
-    )
+    setExpenseObj((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
     setError({});
-  } 
+  };
   return (
     <form className="expense-form" onSubmit={handleSubmit}>
-      <div className="input-container">
-        <label htmlFor="title">Title</label>
-        <input
-          id="title"
-          name="title"
-          value={expenseObj.title}
-          onChange={handleChange}
-          /***ref={titleRef}***/
-        />
-        <p className="error">{error.title}</p>
-      </div>
-      <div className="input-container">
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={expenseObj.category}
-          onChange={handleChange}
-          /***ref={categoryRef} */ 
-        >
-          <option value="" hidden>
-            Select Category
-          </option>
-          <option value="Grocery">Grocery</option>
-          <option value="Clothes">Clothes</option>
-          <option value="Bills">Bills</option>
-          <option value="Education">Education</option>
-          <option value="Medicine">Medicine</option>
-        </select>
-         <p className="error">{error.category}</p>
-      </div>
-      <div className="input-container">
-        <label htmlFor="amount">Amount</label>
-        <input
-          id="amount"
-          name="amount"
-          value={expenseObj.amount}
-          onChange={handleChange}
-          /*** ref={amountRef} */
-        />
-         <p className="error">{error.amount}</p>
-      </div>
+      <Input
+        label="Title"
+        id="title"
+        name="title"
+        value={expenseObj.title}
+        onChange={handleChange}
+        error={error.title}
+      />
+      <Select
+        label="Category"
+        id="category"
+        name="category"
+        value={expenseObj.category}
+        onChange={handleChange}
+        error={error.category}
+        defaultVal="Select Category"
+        options={["Grocery", "Clothes", "Bills", "Education", "Medicine"]}
+      />
+      <Input
+        label="Amount"
+        id="amount"
+        name="amount"
+        value={expenseObj.amount}
+        onChange={handleChange}
+        error={error.amount}
+      />
       <button className="add-btn">Add</button>
     </form>
   );
