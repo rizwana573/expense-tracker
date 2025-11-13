@@ -6,15 +6,15 @@ import {ContextMenu} from "./components/ContextMenu"
 import ExpenseData from "./components/ExpenseData";
 
 function App() {
-  const [expenses, setExepenses] = useState(ExpenseData)
+  const [expenses, setExpenses] = useState(ExpenseData)
   const [query, setQuery] = useState("All");
   return (
     <>
       <main>
       <h1>Track Your Expense</h1>
       <div className="expense-tracker">
-        <ExpenseForm setExepenses={setExepenses} />
-        <ExpenseTable expense={expenses} query={query} setQuery={setQuery}/>
+        <ExpenseForm setExpenses={setExpenses} />
+        <ExpenseTable expense={expenses} setExpenses={setExpenses}/>
         <ContextMenu />
       </div>
     </main>

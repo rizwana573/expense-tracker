@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Input } from "./Input.jsx";
 import { Select } from "./Select.jsx";
 
-export const ExpenseForm = ({ setExepenses }) => {
+export const ExpenseForm = ({ setExpenses }) => {
   const [expenseObj, setExpenseObj] = useState({
     title: "",
     category: "",
@@ -79,7 +79,7 @@ export const ExpenseForm = ({ setExepenses }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateRes = validate(expenseObj);
-    /***setExepenses((prevState) => [
+    /***setExpenses((prevState) => [
       ...prevState,
       { title: titleRef.current.value,
         category: categoryRef.current.value,
@@ -88,7 +88,7 @@ export const ExpenseForm = ({ setExepenses }) => {
     ]);***/
 
     if (Object.keys(validateRes).length === 0) {
-      setExepenses((prevState) => [
+      setExpenses((prevState) => [
         ...prevState,
         { ...expenseObj, id: crypto.randomUUID() },
       ]);
@@ -100,7 +100,7 @@ export const ExpenseForm = ({ setExepenses }) => {
     });
 
     /**const expense = {...getFormdata(e.target), id:crypto.randomUUID()}
-    setExepenses(prevState => [...prevState, expense])
+    setExpenses(prevState => [...prevState, expense])
      e.target.reset();**/
   };
 
