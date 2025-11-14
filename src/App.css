@@ -108,7 +108,9 @@ main {
     margin-top: 8px;
     padding:0;
 }
-
+.clear-sort{
+    cursor:pointer;
+}
 .context-menu {
     background-color: white;
     border: 1px solid;
