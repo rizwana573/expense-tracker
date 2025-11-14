@@ -2,12 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { Input } from "./Input.jsx";
 import { Select } from "./Select.jsx";
 
-export const ExpenseForm = ({ setExpenses }) => {
-  const [expenseObj, setExpenseObj] = useState({
-    title: "",
-    category: "",
-    amount: "",
-  });
+export const ExpenseForm = ({
+  setExpenses,
+  expenseObj,
+  setExpenseObj,
+  editingRowId,
+  setEditingRowId,
+}) => {
   /***const titleRef= useRef(null);
   const categoryRef= useRef(null);
   const amountRef= useRef(null);***/
@@ -25,7 +26,7 @@ export const ExpenseForm = ({ setExpenses }) => {
         },
         {
           minLength: true,
-          message: "Title should be at least 5 characters long",
+          message: "Title should be at least 4 characters long",
         },
       ],
       category: [
@@ -41,8 +42,8 @@ export const ExpenseForm = ({ setExpenses }) => {
         },
         {
           valid: true,
-          message: "Plase enter a valid number"
-        }
+          message: "Plase enter a valid number",
+        },
       ],
     };
 
@@ -52,12 +53,11 @@ export const ExpenseForm = ({ setExpenses }) => {
           errorsData[key] = rule.message;
           return true;
         }
-        if (value.length < 5 && rule.minLength) {
+        if (value.length <= 3 && rule.minLength) {
           errorsData[key] = rule.message;
           return true;
         }
-        console.log()
-         if (new RegExp('/^[0-9]$/').test(value) && rule.valid) {
+        if (!/^[0-9]+$/.test(value) && rule.valid) {
           errorsData[key] = rule.message;
           return true;
         }
@@ -87,12 +87,31 @@ export const ExpenseForm = ({ setExpenses }) => {
         id: crypto.randomUUID() },
     ]);***/
 
-    if (Object.keys(validateRes).length === 0) {
-      setExpenses((prevState) => [
-        ...prevState,
-        { ...expenseObj, id: crypto.randomUUID() },
-      ]);
+    if (Object.keys(validateRes).length) return;
+    if (editingRowId) {
+      setExpenses((prevState) =>
+        prevState.map((prevExpense) => {
+          if (prevExpense.id === editingRowId) {
+            return { ...expenseObj, id: editingRowId };
+          }
+          return prevExpense;
+        })
+      );
+
+      setExpenseObj({
+        title: "",
+        category: "",
+        amount: "",
+      });
+      setEditingRowId("");
+      return;
     }
+
+    setExpenses((prevState) => [
+      ...prevState,
+      { ...expenseObj, id: crypto.randomUUID() },
+    ]);
+
     setExpenseObj({
       title: "",
       category: "",
@@ -112,6 +131,7 @@ export const ExpenseForm = ({ setExpenses }) => {
     }
     return data;
   };**/
+
   const handleChange = (e) => {
     setExpenseObj((prevState) => ({
       ...prevState,
@@ -147,7 +167,7 @@ export const ExpenseForm = ({ setExpenses }) => {
         onChange={handleChange}
         error={error.amount}
       />
-      <button className="add-btn">Add</button>
+      <button className="add-btn">{editingRowId ? "Save" : "Add"}</button>
     </form>
   );
 };
