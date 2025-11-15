@@ -13,6 +13,7 @@ export const ExpenseTable = ({
   const [rowId, setRowId] = useState(null);
   const [sortCallback, setSortCallback] = useState(() => ()=> {});
 
+
   const handleFilterChange = (e) => {
     setQuery(e.target.value);
   };
